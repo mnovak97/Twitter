@@ -10,6 +10,7 @@ import SwiftUI
 struct CustomTextView: View {
     var imagename:String
     var labelText:String
+    var isSecuredField: Bool? = false
     @Binding var text:String
     
     var body: some View {
@@ -20,7 +21,12 @@ struct CustomTextView: View {
                     .scaledToFit()
                     .frame(width: 20, height: 20)
                     .foregroundColor(Color(.darkGray))
-                TextField(labelText, text: $text)
+                
+                if isSecuredField ?? false {
+                    SecureField(labelText, text: $text)
+                } else {
+                    TextField(labelText, text: $text)
+                }
             }
             Divider()
                 .background(Color(.darkGray))
@@ -30,7 +36,7 @@ struct CustomTextView: View {
 
 struct CustomTextView_Previews: PreviewProvider {
     static var previews: some View {
-        CustomTextView(imagename: "envelope", labelText: "Email", text: .constant(""))
+        CustomTextView(imagename: "envelope", labelText: "Email", isSecuredField: false, text: .constant(""))
             .previewLayout(.sizeThatFits)
     }
 }

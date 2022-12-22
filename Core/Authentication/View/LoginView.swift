@@ -8,26 +8,16 @@
 import SwiftUI
 
 struct LoginView: View {
+    @State private var email = ""
+    @State private var password = ""
+    @EnvironmentObject var authViewModel: AuthViewModel
     var body: some View {
         VStack {
-            VStack(alignment: .leading,content:{
-                HStack{Spacer()}
-                Text("Hello.")
-                    .font(.largeTitle)
-                    .fontWeight(.semibold)
-                Text("Welcome Back")
-                    .font(.largeTitle)
-                    .fontWeight(.semibold)
-            })//VSTACK
-                .frame(height:260)
-                .padding(.leading)
-                .foregroundColor(.white)
-                .background(Color(.systemBlue))
-                .clipShape(CustomShape(corners: [.bottomRight]))
+            AuthHeaderView(titleFirst: "Hello.", titleSecond: "Welcome Back")
             
             VStack(spacing:40) {
-                CustomTextView(imagename: "envelope", labelText: "Email", text: .constant(""))
-                CustomTextView(imagename: "lock", labelText: "Password", text: .constant(""))
+                CustomTextView(imagename: "envelope", labelText: "Email", text: $email)
+                CustomTextView(imagename: "lock", labelText: "Password",isSecuredField: true, text: $password)
             }//VSTACK
             .padding(.horizontal, 33)
             .padding(.top,44)
@@ -40,7 +30,9 @@ struct LoginView: View {
                     .padding(.top)
                     .padding(.bottom)
             }//HSTACK
-            Button(action: {}) {
+            Button(action: {
+                authViewModel.login(email: email, password: password)
+            }) {
                 Text("Sign in")
                     .padding()
                     .frame(width: 350, height: 50)
@@ -52,7 +44,7 @@ struct LoginView: View {
            Spacer()
             
             NavigationLink{
-                
+                RegistrationView()
             } label: {
                 HStack{
                    Text("Don't have an account?")
